@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>    <!-- 表名Student -->
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+ <!-- 命名空间 分类管理 一般情况一个表对应一个命名空间 -->
+<mapper namespace="Book">
+	<select id="findBookBySm"  resultType="shumei.domain.Book">
+		select * from Book where sm = 'Web站点安全'
+	</select>
+	
+	<!-- 传参数 #{sm/value/ss无所谓} -->
+	<select id="findBookBySmParam" parameterType='string' resultType='shumei.domain.Book'>
+		select * from Book where sm = #{sm}
+	</select>
+	
+	<!-- 传参数 #{sm/value/ss无所谓} -->
+	<select id="findBookByIsbnParam" parameterType='string' resultType='shumei.domain.Book'>
+		select * from Book where isbn = #{isbn}
+	</select>
+	
+	
+	<!-- 模糊查询 ’$‘：拼接 ;必须value-->
+	<select id="findBookByLikeSm" parameterType='string' resultType='shumei.domain.Book'>
+		select * from Book where sm like '%${value}%'
+	</select>
+	
+	<insert id="insertBook" parameterType="shumei.domain.Book">
+		insert into book(isbn,sm,zz) values(#{isbn},#{sm},#{zz})
+	</insert>
+	
+	<update id="updateBook" parameterType="shumei.domain.Book">
+		update book set sm=#{sm} where isbn=#{isbn}
+	</update>
+	
+	<delete id="deleteBook" parameterType='string'>
+		delete from book where isbn=#{isbn}
+	</delete>
+	
+	<select id="findJyls"  parameterType='string' resultType="shumei.domain.Book">
+		select * from book where isbn in 
+	(select isbn from jyls where jszh in
+	(select jszh from student where xm like '%${value}%')
+	)
+	</select>
+	
+	
+
+	
+</mapper>

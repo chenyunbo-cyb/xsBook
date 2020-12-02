@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace = "shumei.dao.BookDao">
+
+<select id="findBookListByStd" parameterType='hashmap' resultType='shumei.domain.Book'>
+	select * from book where isbn in (select isbn from jyls where jszh in (select jszh from student where xm like '%${xm}%' and zym=#{majorName}))
+</select>
+
+<!-- ///////////////////////   resultMap  //////////////////////////// -->
+<resultMap id="bookMap" type="shumei.domain.BookMap">
+	<id column="isbn" property="isbn"></id>
+	<result column="sm" property="bookNameString"></result>
+	<result column="zz" property="zuozheString"></result>
+</resultMap>
+<select id="findAllBook" resultMap="book"></select>
+<!-- //////////////////////////////////////////////////// -->
+
+</mapper>

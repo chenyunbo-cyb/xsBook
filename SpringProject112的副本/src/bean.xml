@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+<context:component-scan base-package="shumei"></context:component-scan>
+<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+<!-- 
+<bean id="bookService" class="shumei.service.impl.BookServiceimpl">
+  <property name="bookDaoImpl" ref="bookDao"></property>
+</bean> 
+
+<bean id="bookDao" class="shumei.dao.impl.StdBookDaoImpl">
+ <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+</bean>
+
+-->
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+ <property name="dataSource" ref="dataSource"></property>
+</bean>
+
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+  <property name="url" value="jdbc:mysql://localhost:3306/xsbook"></property>
+  <property name="username" value="root"></property>
+  <property name="password" value="123"></property>
+</bean>
+
+<!-- 
+<bean id="studentService" class="shumei.service.impl.StudentServiceimpl">
+  <property name="studentDaoImpl1" ref="studentDao"></property>
+</bean>
+
+<bean id="studentDao" class="shumei.dao.impl.StudentDaoImpl1">
+ <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+</bean>
+
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+ <property name="dataSource" ref="dataSource"></property>
+</bean>
+
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+  <property name="url" value="jdbc:mysql://localhost:3306/xsbook"></property>
+  <property name="username" value="root"></property>
+  <property name="password" value="123"></property>
+</bean>
+
+
+ 
+<bean id="stdDao" class="shumei.dao.impl.StudentDaoImpl"></bean>
+<bean id="stdService" class="shumei.service.impl.StudentServiceimpl"></bean>
+<bean id="logger" class="shumei.utils.Logger"></bean>
+<aop:config>
+   <aop:pointcut id="cp1" expression="execution(* *..impl.StudentServiceimpl.*(..))"></aop:pointcut>
+   <aop:aspect id="loggerAspect" ref="logger">
+   	  <aop:before method="beforePrintLog" pointcut-ref="cp1"/>
+   	  <aop:after-returning method="afterPrintLog" pointcut-ref="cp1"></aop:after-returning>
+   	  <aop:after-throwing method="exceptionPrintLog" pointcut-ref="cp1"></aop:after-throwing>
+   	  <aop:after method="finalPrintLog" pointcut-ref="cp1"></aop:after>
+   	   <aop:before method="beforePrintLog" pointcut="execution(public void shumei.service.impl.StudentServiceimpl.updateStudent(Integer))"/>
+   </aop:aspect>
+</aop:config>-->
+    <!-- 常规/默认/无参方法创建 
+    <bean id="stdService" class="shumei.service.impl.StudentServiceimpl">
+        <property name="xm" value="张三"></property>
+        <property name="xh" value="001"></property>
+        <property name="bj" value="数媒"></property>
+        <property name="skDate" ref="now"></property>
+        <property name="xsLstList">
+           <array>
+             <value>AAA</value>
+             <value>123</value>
+             <value>345</value>
+           </array>
+        </property>
+    </bean> 
+    
+    <bean id="now" class="java.util.Date"></bean>   
+    
+    <bean id="staticService" class="shumei.factory.StaticFactory" factory-method="getStudentService"></bean>-->
+
+     <!-- 实例工厂创建 --> <!-- 带class才是完整在bean对象 
+    <bean id="instanceService" class="shumei.factory.InstanceFactory"></bean>
+    <bean id="insService" factory-bean="instanceService" factory-method="getStudentService"></bean>-->
+     
+     <!-- 初始化方法  销毁方法
+    <bean id="stdService" class="shumei.service.impl.StudentServiceimpl" init-method="init" destroy-method="destroy"></bean> -->
+      
+     <!-- 不带"scope"为默认的单例模式，此为多例模式
+    <bean id="stdService" class="shumei.service.impl.StudentServiceimpl" scope="prototype"></bean>-->
+    
+    <!--<bean id="studentService" class="shumei.service.impl.StudentServiceimpl1"></bean>
+    <context:component-scan base-package="shumei"></context:component-scan>-->
+    
+</beans>

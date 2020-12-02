@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+
+<mapper namespace="shumei.dao.StudentDao">
+
+	<select id="studentQuery">
+		<if test="student!=null">
+			<if test="student.xm!=null and student.xm!=''">
+				and xm like '%${student.xm}%'
+			</if>
+			
+		</if>
+	</select>
+	<select id="findStudentsByQuery" parameterType="shumei.query.ZHQuery" resultType="shumei.domain.Student">
+	 select * from student <where><include refid="studentQuery"></include></where>
+	 and jss>#{student.jss} and jszh in(select jszh from jyls where isbn in(select isbn from book where sm=#{book.sm}))
+	</select>
+
+</mapper>
